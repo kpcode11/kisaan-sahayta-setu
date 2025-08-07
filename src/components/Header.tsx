@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Globe, Volume2, Menu, X } from "lucide-react";
+import { Globe, Volume2, Menu, X, Home, BookOpen, MapPin } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/enhanced-button";
 import { Card } from "@/components/ui/enhanced-card";
 
@@ -19,8 +20,15 @@ const Header = () => {
   const [showLanguages, setShowLanguages] = useState(false);
   const [isTTSEnabled, setIsTTSEnabled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   const currentLang = languages.find(lang => lang.code === currentLanguage);
+
+  const navigationItems = [
+    { path: "/", label: "Dashboard", icon: Home },
+    { path: "/schemes", label: "Schemes", icon: BookOpen },
+    { path: "/help-centers", label: "Help Centers", icon: MapPin }
+  ];
 
   const toggleTTS = () => {
     setIsTTSEnabled(!isTTSEnabled);
@@ -39,7 +47,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo and Title */}
-          <div className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-hero rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">🌾</span>
             </div>
@@ -47,9 +55,27 @@ const Header = () => {
               <h1 className="text-xl font-bold text-foreground">Farmer Sahayak</h1>
               <p className="text-xs text-muted-foreground hidden sm:block">Government Scheme Assistant</p>
             </div>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  location.pathname === item.path
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <item.icon className="w-4 h-4" />
+                <span>{item.label}</span>
+              </Link>
+            ))}
+          </div>
+
+          {/* Right Side Controls */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Language Selector */}
             <div className="relative">
@@ -123,6 +149,25 @@ const Header = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden py-4 border-t">
             <div className="space-y-4">
+              {/* Mobile Navigation */}
+              <div className="space-y-2">
+                {navigationItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname === item.path
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span>{item.label}</span>
+                  </Link>
+                ))}
+              </div>
+
               {/* Mobile Language Selector */}
               <div>
                 <p className="text-sm font-medium mb-2">Language</p>

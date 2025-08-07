@@ -8,10 +8,9 @@ const cardVariants = cva(
     variants: {
       variant: {
         default: "hover:shadow-elevated",
-        elevated: "shadow-elevated hover:shadow-glow",
+        elevated: "shadow-elevated hover:shadow-elevated",
         earth: "bg-gradient-card border-earth-primary/20 hover:border-earth-primary/40",
-        interactive: "hover:shadow-elevated hover:scale-[1.02] cursor-pointer",
-        glow: "shadow-glow hover:shadow-elevated animate-glow-pulse"
+        interactive: "hover:shadow-elevated hover:scale-[1.02] cursor-pointer"
       },
       padding: {
         default: "p-6",
